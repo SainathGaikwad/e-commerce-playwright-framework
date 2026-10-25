@@ -49,25 +49,11 @@ export class LoginPage extends BasePage {
   async login(username: string, password: string): Promise<void> {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
-
-    // Use Promise.all to wait for navigation and click simultaneously
-    if (username && password && username !== "locked_out_user") {
-      // For valid credentials, we expect navigation to occur
-      try {
-        await Promise.all([
-          this.page.waitForNavigation({ timeout: 10000 }), // Increase timeout to 10 seconds
-          this.loginButton.click(),
-        ]);
-      } catch (error) {
-        console.log(
-          "Navigation may not have completed, continuing with test..."
-        );
-        await this.loginButton.click();
-      }
-    } else {
-      // For invalid credentials, we don't expect navigation
-      await this.loginButton.click();
-    }
+    // Click and return. Callers assert the outcome (inventory URL or an error
+    // message), so this method stays valid for both positive and negative cases.
+    // The old waitForNavigation() race lost against fast navigations, waited out
+    // a 10s timeout, then clicked Login a second time.
+    await this.loginButton.click();
   }
 
   /**

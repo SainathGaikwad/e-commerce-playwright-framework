@@ -42,12 +42,10 @@ export class BasePage {
    * @param locator Element to click
    */
   async clickAndWaitForNavigation(locator: Locator): Promise<void> {
-    try {
-      await Promise.all([this.page.waitForNavigation(), locator.click()]);
-    } catch (error) {
-      // If navigation doesn't occur, just click the element
-      await locator.click();
-    }
+    // Playwright's click() already waits for any navigation it triggers.
+    // waitForNavigation() is deprecated and races against fast navigations.
+    await locator.click();
+    await this.page.waitForLoadState("domcontentloaded");
   }
 
   /**
