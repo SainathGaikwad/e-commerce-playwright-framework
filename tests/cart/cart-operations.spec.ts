@@ -116,23 +116,14 @@ test.describe("Cart Operations", () => {
     );
     console.log(`Cart badge updated to ${expectedCount2}`);
 
-    //Navigation with Retry
-    // Go to cart with retry logic
-    try {
-      await productListPage.navigateToCart();
-    } catch (error) {
-      console.log("Failed to navigate to cart on first attempt, retrying...");
-      await page.waitForTimeout(1000);
-      await productListPage.navigateToCart();
-    }
+    await productListPage.navigateToCart();
 
     //Cart Page Verification
 
     // Wait for cart page to load
     await expect(page).toHaveURL(/.*cart.html/, { timeout: 10000 });
 
-    // Wait to ensure cart items are loaded
-    await page.waitForTimeout(1000);
+    await expect(page.locator(".cart_item").first()).toBeVisible();
 
     // Final Verification
 

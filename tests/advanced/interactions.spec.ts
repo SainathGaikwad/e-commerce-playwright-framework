@@ -78,8 +78,8 @@ test.describe("Advanced Browser Interactions", () => {
       }
     });
 
-    // Wait for potential DOM updates
-    await page.waitForTimeout(1000);
+    // Drag-and-drop on this page swaps the column text synchronously once the drop fires.
+    await expect(page.locator("#column-a")).toBeVisible();
 
     // Get text after drag attempt
     const finalAText = await page.locator("#column-a").textContent();

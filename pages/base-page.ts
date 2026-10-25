@@ -29,7 +29,7 @@ export class BasePage {
    */
   async waitForPageLoad(): Promise<void> {
     // Wait for network to be idle
-    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForLoadState("domcontentloaded");
 
     // If there's a loading indicator, wait for it to disappear
     if (await this.loadingIndicator.isVisible()) {
@@ -86,8 +86,6 @@ export class BasePage {
    */
   async scrollToElement(locator: Locator): Promise<void> {
     await locator.scrollIntoViewIfNeeded();
-    // Add a small delay to ensure element is properly in view
-    await this.page.waitForTimeout(100);
   }
 
   /**

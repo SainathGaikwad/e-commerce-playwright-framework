@@ -107,8 +107,8 @@ test.describe("Checkout Process", () => {
       await firstAddButton.click();
       console.log(`[${browserName}] Added first product`);
 
-      // Wait a moment between clicks
-      await page.waitForTimeout(1000);
+      // The clicked button is replaced by "Remove"; wait for the badge, not the clock.
+      await expect(page.locator(".shopping_cart_badge")).toHaveText("1");
 
       // Add second product - get all buttons again as DOM might have changed
       const secondAddButton = page
@@ -122,7 +122,7 @@ test.describe("Checkout Process", () => {
       currentStep = 3;
       console.log(`[${browserName}] Step ${currentStep}: Navigating to cart`);
 
-      await page.waitForTimeout(1000); // Ensure cart is updated
+      await expect(page.locator(".shopping_cart_badge")).toHaveText("2");
       await page.locator(".shopping_cart_link").click();
 
       // Verify we're on the cart page
@@ -164,12 +164,10 @@ test.describe("Checkout Process", () => {
         timeout: 10000,
       });
 
-      // Fill in form fields with short delays between
       await page.fill('[data-test="firstName"]', "Test");
-      await page.waitForTimeout(300);
       await page.fill('[data-test="lastName"]', "User");
-      await page.waitForTimeout(300);
       await page.fill('[data-test="postalCode"]', "12345");
+      await expect(page.locator('[data-test="postalCode"]')).toHaveValue("12345");
 
       console.log(`[${browserName}] Filled checkout information`);
 
@@ -179,7 +177,6 @@ test.describe("Checkout Process", () => {
         `[${browserName}] Step ${currentStep}: Continuing to checkout overview`
       );
 
-      await page.waitForTimeout(1000); // Ensure form is fully populated
       await page.locator('[data-test="continue"]').click();
 
       // Verify we're on the checkout overview page

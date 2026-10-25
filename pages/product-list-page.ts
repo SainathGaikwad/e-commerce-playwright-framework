@@ -68,6 +68,7 @@ export class ProductListPage extends BasePage {
    * @returns Product name
    */
   async getProductName(index: number): Promise<string> {
+    await this.productTitles.first().waitFor({ state: "visible" });
     const products = await this.productTitles.all();
     if (index >= products.length) {
       throw new Error(
@@ -83,6 +84,7 @@ export class ProductListPage extends BasePage {
    * @returns Product price (including $ sign)
    */
   async getProductPrice(index: number): Promise<string> {
+    await this.productPrices.first().waitFor({ state: "visible" });
     const prices = await this.productPrices.all();
     if (index >= prices.length) {
       throw new Error(
@@ -98,6 +100,7 @@ export class ProductListPage extends BasePage {
    * @returns Product description
    */
   async getProductDescription(index: number): Promise<string> {
+    await this.productDescriptions.first().waitFor({ state: "visible" });
     const descriptions = await this.productDescriptions.all();
     if (index >= descriptions.length) {
       throw new Error(
@@ -112,13 +115,16 @@ export class ProductListPage extends BasePage {
    * @param index Product index (0-based)
    */
   async addProductToCart(index: number): Promise<void> {
-    const addButtons = await this.addToCartButtons.all();
-    if (index >= addButtons.length) {
+    // nth() auto-waits for the element, unlike all(), which snapshots immediately
+    // and returns [] if the list has not rendered yet.
+    await this.addToCartButtons.first().waitFor({ state: "visible" });
+    const count = await this.addToCartButtons.count();
+    if (index >= count) {
       throw new Error(
-        `Product index ${index} is out of range. Only ${addButtons.length} products available.`
+        `Product index ${index} is out of range. Only ${count} products available.`
       );
     }
-    await addButtons[index].click();
+    await this.addToCartButtons.nth(index).click();
   }
 
   /**
@@ -126,13 +132,14 @@ export class ProductListPage extends BasePage {
    * @param index Product index (0-based)
    */
   async removeProductFromCart(index: number): Promise<void> {
-    const removeButtons = await this.removeButtons.all();
-    if (index >= removeButtons.length) {
+    await this.removeButtons.first().waitFor({ state: "visible" });
+    const count = await this.removeButtons.count();
+    if (index >= count) {
       throw new Error(
-        `Product index ${index} is out of range. Only ${removeButtons.length} remove buttons available.`
+        `Product index ${index} is out of range. Only ${count} remove buttons available.`
       );
     }
-    await removeButtons[index].click();
+    await this.removeButtons.nth(index).click();
   }
 
   /**
@@ -155,8 +162,9 @@ export class ProductListPage extends BasePage {
    */
   async sortProducts(sortOption: "az" | "za" | "lohi" | "hilo"): Promise<void> {
     await this.sortDropdown.selectOption(sortOption);
-    // Wait for sort to take effect
-    await this.page.waitForTimeout(500);
+    // The dropdown reflects the new value synchronously; the list re-renders in the same tick.
+    await expect(this.sortDropdown).toHaveValue(sortOption);
+    await this.productTitles.first().waitFor({ state: "visible" });
   }
 
   /**
@@ -184,8 +192,7 @@ export class ProductListPage extends BasePage {
    */
   async openBurgerMenu(): Promise<void> {
     await this.burgerMenu.click();
-    // Wait for menu to open
-    await this.page.waitForTimeout(500);
+    await this.page.locator("#logout_sidebar_link").waitFor({ state: "visible" });
   }
 
   /**
