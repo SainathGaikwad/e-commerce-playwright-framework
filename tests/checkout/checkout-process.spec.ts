@@ -84,7 +84,7 @@ test.describe("Checkout Process", () => {
       console.log(`[${browserName}] Found ${productCount} products`);
 
       // Take screenshot for debugging
-      await page.screenshot({ path: `inventory-${browserName}.png` });
+      await page.screenshot({ path: `test-results/screenshots/inventory-${browserName}.png` });
 
       // Step 2: Add products to cart
       currentStep = 2;
@@ -130,7 +130,7 @@ test.describe("Checkout Process", () => {
       console.log(`[${browserName}] Successfully navigated to cart page`);
 
       // Take screenshot for debugging
-      await page.screenshot({ path: `cart-${browserName}.png` });
+      await page.screenshot({ path: `test-results/screenshots/cart-${browserName}.png` });
 
       // Step 4: Proceed to checkout
       currentStep = 4;
@@ -150,7 +150,7 @@ test.describe("Checkout Process", () => {
       );
 
       // Take screenshot for debugging
-      await page.screenshot({ path: `checkout-step1-${browserName}.png` });
+      await page.screenshot({ path: `test-results/screenshots/checkout-step1-${browserName}.png` });
 
       // Step 5: Fill checkout information
       currentStep = 5;
@@ -189,7 +189,7 @@ test.describe("Checkout Process", () => {
       );
 
       // Take screenshot for debugging
-      await page.screenshot({ path: `checkout-step2-${browserName}.png` });
+      await page.screenshot({ path: `test-results/screenshots/checkout-step2-${browserName}.png` });
 
       // Step 7: Complete purchase
       currentStep = 7;
@@ -207,7 +207,7 @@ test.describe("Checkout Process", () => {
       );
 
       // Take screenshot for debugging
-      await page.screenshot({ path: `checkout-complete-${browserName}.png` });
+      await page.screenshot({ path: `test-results/screenshots/checkout-complete-${browserName}.png` });
 
       // Step 8: Verify thank you message
       currentStep = 8;
@@ -244,7 +244,7 @@ test.describe("Checkout Process", () => {
     } catch (error) {
       // Create failure screenshot with step number
       await page.screenshot({
-        path: `failure-step${currentStep}-${browserName}.png`,
+        path: `test-results/screenshots/failure-step${currentStep}-${browserName}.png`,
       });
       console.error(
         `[${browserName}] Test failed at step ${currentStep}: ${(error as Error).message}`

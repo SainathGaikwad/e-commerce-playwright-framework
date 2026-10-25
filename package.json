@@ -1,7 +1,7 @@
 {
   "name": "e-commerce-playwright-framework",
   "version": "1.0.0",
-  "description": "Comprehensive Playwright automation framework for e-commerce website testing",
+  "description": "Multi-site Playwright + TypeScript automation framework covering SauceDemo (e-commerce), The Internet (interactions, files, dialogs) and DemoQA (forms, tables) with a shared Page Object / component layer.",
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
@@ -10,7 +10,6 @@
     "test:debug": "playwright test --debug",
     "test:webkit": "playwright test --project=webkit",
     "test:firefox": "playwright test --project=firefox",
-    "test:chrome": "playwright test --project=chromium",
     "test:all-browsers": "playwright test --project=all",
     "test:parallel": "playwright test --workers=4",
     "test:smoke": "playwright test --grep @smoke",
@@ -18,7 +17,10 @@
     "test:visual": "playwright test --grep @visual",
     "report": "playwright show-report",
     "codegen": "playwright codegen https://www.saucedemo.com/",
-    "update:snapshots": "playwright test --update-snapshots"
+    "update:snapshots": "playwright test --update-snapshots",
+    "typecheck": "tsc --noEmit -p .",
+    "test:chromium": "playwright test --project=chromium",
+    "test:sauce": "playwright test tests/sauce-demo tests/authentication tests/cart tests/checkout --project=chromium"
   },
   "keywords": [
     "playwright",
@@ -26,8 +28,8 @@
     "testing",
     "e-commerce"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Sainath Gaikwad",
+  "license": "MIT",
   "devDependencies": {
     "@faker-js/faker": "^8.0.0",
     "@types/pixelmatch": "^5.2.6",
@@ -41,5 +43,8 @@
     "playwright-cli-select": "^1.0.6",
     "prettier": "^3.0.1",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.64.1"
   }
 }

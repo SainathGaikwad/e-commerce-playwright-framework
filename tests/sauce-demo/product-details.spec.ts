@@ -117,7 +117,7 @@ test.describe("Product Details Page", () => {
       await expect(page).toHaveURL(/inventory.html/);
     } catch (error) {
       console.error("Navigate back test failed:", error);
-      await page.screenshot({ path: "navigate-back-error.png" });
+      await page.screenshot({ path: "test-results/screenshots/navigate-back-error.png" });
       throw error;
     }
   });

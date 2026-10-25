@@ -24,3 +24,7 @@ logs/
 
 # Dependencies installed by Playwright
 .playwright/
+# Screenshots written by tests
+test-results/
+*.png
+!docs/**/*.png

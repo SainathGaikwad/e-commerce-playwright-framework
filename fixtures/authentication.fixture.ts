@@ -1,5 +1,5 @@
 import { test as base, Page, BrowserContext, request } from "@playwright/test";
-import { LoginPage } from "../../pages/login-page";
+import { LoginPage } from "../pages/login-page";
 import { readFileSync } from "fs";
 import path from "path";
 import dotenv from "dotenv";
